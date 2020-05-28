@@ -10,21 +10,87 @@
   padding: 0;
 }
 
+.header {
+  display: flex;
+  background-color: var(--component-bg);
+  border-bottom: 1px solid var(--hairline-color);
+
+  @nest .fullscreenWrapper & {
+    position: fixed;
+    box-sizing: border-box;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    border: 0;
+  }
+}
+
+.toolbarContainer {
+  min-width: 0;
+  flex: 1;
+  height: 41px;
+
+  @nest .fullscreenWrapper & {
+    height: 49px;
+  }
+}
+
+.fullscreenButtonContainer {
+  border-left: 1px solid var(--hairline-color);
+  padding: var(--extra-small-padding);
+
+  @nest .fullscreenWrapper & {
+    padding: var(--small-padding);
+  }
+}
+
+.editorBox {
+  border: var(--input-border-size) solid var(--input-border-color);
+  border-radius: var(--input-border-radius);
+  overflow: hidden;
+
+  @nest .root.readOnly &, .root.disabled & {
+    background-color: var(--input-bg-disabled);
+    color: var(--input-color-disabled);
+  }
+
+  @nest .root:not(.readOnly) & {
+    @media (hover: hover) {
+      @nest &:hover {
+        box-shadow: var(--input-box-shadow--hover);
+        border-color: var(--input-border-color-hover);
+      }
+
+      @nest .focus:not(.fullscreenWrapper) & {
+        box-shadow: var(--input-box-shadow--focus);
+        border-color: var(--input-border-color-focus);
+
+        /* @todo: Make the focus BG compatible with the annotation gutter */
+        /* background-color: var(--input-bg-focus); */
+      }
+    }
+  }
+
+  @nest .fullscreenWrapper & {
+    border: 0;
+  }
+}
+
 .fullscreenWrapper {
   position: fixed;
   top: 0;
   left: 0;
   z-index: var(--zindex-portal);
   background-color: var(--body-bg);
-  margin-top: 4rem;
+  margin-top: 49px;
 }
 
 .scrollContainer {
   composes: scrollY from 'part:@sanity/base/theme/layout/scrolling-style';
   display: block;
   height: 15rem;
-  border: 1px solid var(--input-border-color);
-  border-radius: var(--input-border-radius);
   box-sizing: border-box;
   overflow-y: overlay;
   display: flex;
@@ -48,7 +114,7 @@
     top: 0;
     left: 0;
     display: flex;
-    height: calc(100vh - 4rem);
+    height: calc(100vh - 49px);
     width: 100vw;
     background-color: color(var(--body-bg) lightness(- 2%));
     background-image: unset;
@@ -58,17 +124,11 @@
       display: none;
     }
   }
-
-  @nest .focus:not(.fullscreenWrapper) & {
-    border: 1px solid var(--input-border-color-focus);
-    box-shadow: 0 0 8px color(var(--input-border-color-focus) a(35%));
-  }
 }
 
 .editorWrapper {
-  /* make it fill its parent */
-  composes: shadow-6dp from 'part:@sanity/base/theme/shadows-style';
   box-sizing: border-box;
+  /* make it fill its parent */
   height: auto;
   display: flex;
   flex-direction: column;
@@ -76,16 +136,13 @@
 }
 
 .fullscreen .editorWrapper {
-  max-width: 50em;
-  margin: 3rem auto;
+  max-width: 640px;
   background-color: var(--input-bg);
-  width: 95vw;
+  width: 100%;
   box-sizing: border-box;
-  margin-top: 5rem;
 
   @media (--screen-medium) {
-    width: 90vw;
-    margin: 5rem auto;
+    margin: var(--extra-large-padding) auto;
   }
 }
 
@@ -153,27 +210,31 @@
 }
 
 /* Defaults for text blocks */
-.editor > div > div[class~=pt-text-block] + div[class~=pt-text-block] {
-  padding-top: 0.8rem;
+
+.editor > div > div[class~='pt-text-block'] + div[class~='pt-text-block'] {
+  padding-top: var(--medium-padding);
 }
 
 /* spacing on block objects  */
-.editor > div > div[class~=pt-object-block] + div[class~=pt-object-block] {
+
+.editor > div > div[class~='pt-object-block'] + div[class~='pt-object-block'] {
   padding-top: 0;
 }
-.editor > div > div[class~=pt-object-block] + div[class~=pt-text-block] {
-  padding-top: 0.8rem;
-}
-.editor > div > div[class~=pt-text-block] + div[class~=pt-object-block] {
-  padding-top: 0.8rem;
+
+.editor > div > div[class~='pt-object-block'] + div[class~='pt-text-block'] {
+  padding-top: var(--medium-padding);
 }
 
-.editor > div > div[class~=pt-list-item] + div[class~=pt-list-item] {
-  padding-top: 0.25rem;
+.editor > div > div[class~='pt-text-block'] + div[class~='pt-object-block'] {
+  padding-top: var(--medium-padding);
 }
 
+.editor > div > div[class~='pt-list-item'] + div[class~='pt-list-item'] {
+  padding-top: var(--extra-small-padding);
+}
 
 /* All blocks */
+
 .editor > div > * {
   position: relative;
   box-sizing: content-box;
@@ -196,8 +257,8 @@
     }
 
     @media (--screen-large) {
-      padding-left: 4rem;
-      padding-right: 4rem;
+      padding-left: var(--extra-large-padding);
+      padding-right: var(--extra-large-padding);
     }
   }
 }
@@ -215,7 +276,7 @@
     }
 
     @media (--screen-large) {
-      margin-top: 4rem;
+      margin-top: var(--extra-large-padding);
     }
   }
 }
@@ -229,11 +290,11 @@
 
 .editor > div > *:last-child {
   flex-grow: 1;
+
   @nest .fullscreenWrapper & {
     padding-bottom: 3rem;
   }
 }
-
 
 .blockExtras {
   position: relative;
@@ -242,6 +303,7 @@
   left: 0;
   right: 0;
   pointer-events: none;
+
   @nest .fullscreen & {
     padding-left: 0;
   }

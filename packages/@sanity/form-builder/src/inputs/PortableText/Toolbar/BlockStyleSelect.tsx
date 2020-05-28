@@ -18,12 +18,14 @@ export type BlockStyleItem = {
 type Props = {
   className: string
   editor: PortableTextEditor
+  padding?: string
   renderBlock: RenderBlockFunction
   selection: EditorSelection
 }
 const noStylePreview = (): JSX.Element => <div>No style</div>
 
 export default function BlockStyleSelect(props: Props): JSX.Element {
+  const {padding} = props
   const ptFeatures = PortableTextEditor.getPortableTextFeatures(props.editor)
 
   const renderStyle = (style, StyleComponent): JSX.Element => {
@@ -109,6 +111,7 @@ export default function BlockStyleSelect(props: Props): JSX.Element {
         disabled={disabled}
         items={items}
         onChange={handleChange}
+        padding={padding}
         renderItem={renderItem}
         transparent
         value={value}

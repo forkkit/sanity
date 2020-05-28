@@ -1,4 +1,6 @@
 /* eslint-disable complexity */
+
+import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ArrowKeyNavigation from 'boundless-arrow-key-navigation/build'
@@ -38,8 +40,13 @@ class StyleSelect extends React.PureComponent {
     onChange: PropTypes.func,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
-    value: PropTypes.array,
-    renderItem: PropTypes.func,
+    value: PropTypes.arrayOf(
+      PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired
+      })
+    ),
+    renderItem: PropTypes.func.isRequired,
     className: PropTypes.string,
     items: PropTypes.arrayOf(
       PropTypes.shape({
@@ -47,16 +54,20 @@ class StyleSelect extends React.PureComponent {
         active: PropTypes.bool
       })
     ),
+    padding: PropTypes.oneOf(['large', 'default', 'small', 'none']),
     transparent: PropTypes.bool
   }
 
   static defaultProps = {
     className: '',
-    onChange() {},
-    onOpen() {},
-    onClose() {},
+    onChange: () => undefined,
+    onOpen: () => undefined,
+    onClose: () => undefined,
     items: [],
-    transparent: false
+    padding: 'default',
+    placeholder: undefined,
+    transparent: false,
+    value: undefined
   }
 
   state = {
@@ -144,19 +155,35 @@ class StyleSelect extends React.PureComponent {
   }
 
   render() {
-    const {value, items, className, placeholder, renderItem, transparent} = this.props
+    const {
+      value,
+      items,
+      className: classNameProp,
+      padding,
+      placeholder,
+      renderItem,
+      transparent
+    } = this.props
     const {showList} = this.state
+    const className = classNames(
+      classNameProp,
+      styles.root,
+      transparent && styles.transparent,
+      padding && styles[`padding_${padding}`]
+    )
+
+    console.log(this.props)
 
     return (
       <div
-        tabIndex={0}
+        className={className}
         onClick={this.handleButtonClick}
         onBlur={this.handleButtonBlur}
         onKeyPress={this.handleButtonKeyDown}
-        className={`${styles.root} ${className || ''} ${transparent ? styles.transparent : ''}`}
+        tabIndex={0}
       >
-        <div className={styles.inner} ref={this.buttonElement}>
-          <div className={styles.selectContainer}>
+        <button className={styles.button} ref={this.buttonElement}>
+          <div className={styles.buttonInner}>
             <span className={styles.title}>
               {value && value.length > 1 && 'Multiple'}
               {value && value.length == 1 && value[0].title}
@@ -166,7 +193,8 @@ class StyleSelect extends React.PureComponent {
               <ArrowIcon color="inherit" />
             </span>
           </div>
-        </div>
+        </button>
+
         <Poppable
           onEscape={this.handleCloseList}
           modifiers={modifiers}

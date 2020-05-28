@@ -27,7 +27,6 @@
   position: relative;
   max-height: 250px;
   max-width: 220px;
-  margin: -0.375rem -0.75rem; /* Needed to get rid of tooltip padding */
   outline: none;
 }
 

@@ -544,24 +544,18 @@
 
 :global(.tippy-tooltip) {
   position: relative;
-  color: #fff;
   border-radius: var(--border-radius-medium);
-  font-size: 0.875rem;
-  padding: 0.375rem 0.75rem;
   text-align: center;
   will-change: transform;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--main-navigation-color);
+  color: var(--main-navigation-color--inverted);
 }
 
 :global(.tippy-tooltip--small) {
-  padding: 0.25rem 0.4375rem;
-  font-size: 0.75rem;
 }
 
 :global(.tippy-tooltip--big) {
-  padding: 0.5rem 1rem;
-  font-size: 1.25rem;
 }
 
 :global(.tippy-tooltip[data-animatefill]) {
@@ -597,7 +591,7 @@
 }
 
 :global(.tippy-tooltip.noPadding-theme) {
-  padding: 0 !important;
+  /* padding: 0 !important; */
 }
 
 :global(.tippy-tooltip [x-circle]::before) {

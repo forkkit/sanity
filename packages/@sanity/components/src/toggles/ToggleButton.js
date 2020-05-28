@@ -11,12 +11,14 @@ export default class ToggleButton extends React.Component {
     disabled: PropTypes.bool,
     children: PropTypes.node,
     className: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    padding: PropTypes.oneOf(['large', 'default', 'small', 'none'])
   }
 
   static defaultProps = {
     className: '',
-    disabled: false
+    disabled: false,
+    padding: undefined
   }
 
   render() {

@@ -1,16 +1,15 @@
 /* eslint-disable complexity */
+
+import classNames from 'classnames'
 import React, {RefObject} from 'react'
 import {Tooltip} from 'react-tippy'
 import ArrowIcon from 'part:@sanity/base/angle-down-icon'
 import Button from 'part:@sanity/components/buttons/default'
 import ChevronDown from 'part:@sanity/base/chevron-down-icon'
-import CloseIcon from 'part:@sanity/base/close-icon'
-import FullscreenIcon from 'part:@sanity/base/fullscreen-icon'
 import ValidationList from 'part:@sanity/components/validation/list'
 import WarningIcon from 'part:@sanity/base/warning-icon'
 import Poppable from 'part:@sanity/components/utilities/poppable'
 import {debounce, xor, uniq} from 'lodash'
-import {IS_MAC} from '../PortableTextInput'
 import PrimaryGroup from './PrimaryGroup'
 import styles from './Toolbar.css'
 import {Path} from '../../../typedefs/path'
@@ -40,7 +39,6 @@ type Props = {
   isReadOnly: boolean
   markers: Marker[]
   onFocus: (path: Path) => void
-  onToggleFullscreen: () => void
   renderBlock: RenderBlockFunction
   selection: EditorSelection
 }
@@ -143,7 +141,7 @@ export default class Toolbar extends React.Component<Props, ToolbarState> {
   }, 50)
 
   render(): JSX.Element {
-    const {editor, isFullscreen, markers, onToggleFullscreen} = this.props
+    const {editor, isFullscreen, markers} = this.props
     if (!editor) {
       return null
     }
@@ -154,7 +152,8 @@ export default class Toolbar extends React.Component<Props, ToolbarState> {
     const errors = validation.filter(marker => marker.level === 'error')
     const warnings = validation.filter(marker => marker.level === 'warning')
     const {collapsedGroups, collapsePrimary, collapsePrimaryIsOpen} = this.state
-    const rootClassNames = [styles.root, ...(isFullscreen ? [styles.fullscreen] : [])].join(' ')
+    const rootClassNames = classNames(styles.root, isFullscreen && styles.fullscreen)
+
     return (
       <div
         // Ensure the editor doesn't lose focus when interacting with the toolbar (prevent focus click events)
@@ -168,6 +167,7 @@ export default class Toolbar extends React.Component<Props, ToolbarState> {
               className={styles.showMoreButton}
               onClick={this.handleOpenPrimary}
               kind="simple"
+              padding="small"
             >
               Show menu&nbsp;
               <span>
@@ -235,15 +235,6 @@ export default class Toolbar extends React.Component<Props, ToolbarState> {
               </Button>
             </Tooltip>
           )}
-          <div className={styles.fullscreenButtonContainer}>
-            <Button
-              kind="simple"
-              onClick={onToggleFullscreen}
-              title={`Open in fullscreen (${IS_MAC ? 'cmd' : 'ctrl'}+enter)`}
-              icon={isFullscreen ? CloseIcon : FullscreenIcon}
-              bleed
-            />
-          </div>
         </div>
       </div>
     )

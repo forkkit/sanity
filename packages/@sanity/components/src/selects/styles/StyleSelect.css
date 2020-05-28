@@ -4,48 +4,76 @@
   display: block;
   outline: none;
   position: relative;
-
-  @nest &:focus {
-    box-shadow: 0 0 2px 1px color(var(--input-border-color-focus)),
-      0 0 4px 0 color(var(--input-border-color-focus) a(60%)),
-      0 0 10px 5px color(var(--input-border-color-focus) a(10%));
-  }
 }
 
-.inner {
-  composes: root from 'part:@sanity/base/theme/forms/text-input-style';
+.button {
+  -webkit-font-smoothing: inherit;
+  appearance: none;
+  font: inherit;
+  background: none;
+  color: inherit;
   cursor: default;
+  border: 0;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: var(--button-border-radius);
 
-  @nest .transparent & {
-    background-color: transparent;
-    border: 1px solid color(var(--gray-base) a(8%));
+  @nest .root:not(.transparent) & {
+    border-color: var(--hairline-color);
+  }
 
-    @nest &:hover {
-      background-color: var(--white);
-      border-color: var(--gray-light);
+  @media (hover: hover) {
+    @nest .root.transparent:hover & {
+      background-color: color(var(--default-button-color) a(5%));
     }
+
+    @nest &:focus {
+      box-shadow: 0 0 2px 1px color(var(--input-border-color-focus)),
+        0 0 4px 0 color(var(--input-border-color-focus) a(60%)),
+        0 0 10px 5px color(var(--input-border-color-focus) a(10%));
+    }
+  }
+
+  @nest .padding_large & {
+    padding: calc(var(--medium-padding--em) - 1px);
+  }
+
+  @nest .padding_default & {
+    padding: calc(var(--medium-padding--em) - var(--extra-small-padding--em) - 1px);
+  }
+
+  @nest .padding_small & {
+    padding: calc(var(--small-padding--em) - 1px);
   }
 }
 
 .title {
-  padding-right: 1em;
-  color: var(--text-color);
+  color: inherit;
+
+  /* Adjust for difference between physical/visual line height */
+  margin: -2px 0 -1px;
 }
 
-.transparent:not(:hover) .inner {
-  box-shadow: none;
-}
-
-.selectContainer {
-  composes: selectContainer from 'part:@sanity/components/selects/default-style';
+.buttonInner {
+  position: relative;
   display: flex;
 }
 
 .arrow {
   display: flex;
   align-items: center;
-  padding-left: 0.5em;
+  padding-left: var(--medium-padding);
   margin-left: auto;
+
+  @nest & svg {
+    display: block;
+    font-size: calc(25 / 16 * 1em);
+    margin: calc(4 / 25 * -1em);
+  }
 }
 
 .popper {
@@ -66,7 +94,7 @@
 .item {
   composes: item from 'part:@sanity/base/theme/layout/selectable-style';
   position: relative;
-  border-bottom: 1px solid var(--gray-light);
+  border-bottom: 1px solid var(--hairline-color);
   white-space: nowrap;
   overflow: hidden;
   min-height: 2em;

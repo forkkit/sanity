@@ -6,7 +6,8 @@
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
   z-index: var(--zindex-portal);
 }
 

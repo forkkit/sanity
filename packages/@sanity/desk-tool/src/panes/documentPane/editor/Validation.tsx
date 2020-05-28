@@ -4,7 +4,6 @@ import schema from 'part:@sanity/base/schema'
 import Button from 'part:@sanity/components/buttons/default'
 import ValidationList from 'part:@sanity/components/validation/list'
 import ErrorOutlineIcon from 'part:@sanity/base/error-outline-icon'
-import styles from './Validation.css'
 
 interface ValidationProps {
   id: string
@@ -54,12 +53,11 @@ export function Validation(props: ValidationProps) {
       <Button
         title="Show validation issues"
         kind="simple"
-        inverted
         ripple={false}
         color={errors.length > 0 ? 'danger' : 'warning'}
         icon={ErrorOutlineIcon}
-        className={`${styles.button} ${showValidationTooltip ? styles.isOpen : ''}`}
         onClick={onToggleValidationResults}
+        padding="small"
       />
     </Tooltip>
   )

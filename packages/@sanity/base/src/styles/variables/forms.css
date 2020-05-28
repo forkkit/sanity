@@ -21,8 +21,8 @@
   --input-border-color: var(--gray-lighter);
   --input-border-size: 1px;
   --input-line-height: 2em;
-  --input-padding-vertical: 0.5em;
-  --input-padding-horizontal: 0.2em;
+  --input-padding-vertical: 0.75em;
+  --input-padding-horizontal: 0.25em;
   --input-border-radius: var(--border-radius-small);
   --input-border-radius-large: var(--border-radius-large);
   --input-border-radius-small: var(--border-radius-small);

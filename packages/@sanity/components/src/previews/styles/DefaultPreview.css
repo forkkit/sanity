@@ -147,4 +147,5 @@
 .status {
   white-space: nowrap;
   outline: none;
+  padding-left: var(--small-padding);
 }

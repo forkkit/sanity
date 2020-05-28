@@ -62,6 +62,7 @@ export default class PrimaryGroup extends React.PureComponent<Props, State> {
             <BlockStyleSelect
               className={styles.blockStyleSelect}
               editor={editor}
+              padding="small"
               selection={this.props.selection}
               renderBlock={this.props.renderBlock}
             />

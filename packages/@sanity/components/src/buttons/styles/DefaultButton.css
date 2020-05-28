@@ -316,13 +316,6 @@ span.content {
       margin: calc(4 / 25 * -1em); /* -4px */
     }
   }
-
-  @nest &.sanityIcon {
-    @nest & > svg {
-      font-size: calc(25 / 16 * 1em); /* 25px */
-      margin: calc(4 / 25 * -1em); /* -4px */
-    }
-  }
 }
 
 .text {

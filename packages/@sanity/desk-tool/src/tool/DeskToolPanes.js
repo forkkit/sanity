@@ -12,9 +12,10 @@ import {ResizeObserver} from './resize-observer'
 import {DeskToolPane, LoadingPane} from '../panes'
 import windowWidth$ from '../utils/windowWidth'
 import isNarrowScreen from '../utils/isNarrowScreen'
-import desktoolStyles from './DeskTool.css'
 import {LOADING_PANE} from '../constants'
 import {PaneRouterContext, getPaneRouterContextFactory} from '../contexts/PaneRouterContext'
+
+import styles from './DeskToolPanes.css'
 
 const COLLAPSED_WIDTH = 50
 
@@ -288,7 +289,7 @@ export default class DeskToolPanes extends React.Component {
   render() {
     const {hasNarrowScreen} = this.state
     return (
-      <div ref={this._rootElement} className={desktoolStyles.deskTool}>
+      <div ref={this._rootElement} className={styles.root}>
         <SplitController
           isMobile={hasNarrowScreen}
           autoCollapse={this.props.autoCollapse}

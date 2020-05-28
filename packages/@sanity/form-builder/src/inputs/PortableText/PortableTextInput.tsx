@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React from 'react'
 import {
   PortableTextEditor,
@@ -27,6 +28,7 @@ import styles from './PortableTextInput.css'
 import withPatchSubscriber from '../../utils/withPatchSubscriber'
 import {Subject} from 'rxjs'
 import Toolbar from './Toolbar/Toolbar'
+import {ExpandCollapseButton} from './expandCollapseButton'
 import {BlockObject} from './Objects/BlockObject'
 import {Path} from '../../typedefs/path'
 import {InlineObject} from './Objects/InlineObject'
@@ -404,7 +406,7 @@ export default withPatchSubscriber(
 
     renderEditor = (editor: JSX.Element): JSX.Element => {
       const {selection, isFullscreen} = this.state
-      const {onFocus, markers, renderBlockActions, renderCustomMarkers} = this.props
+      const {onFocus, markers, readOnly, renderBlockActions, renderCustomMarkers} = this.props
       const hasMarkers = markers.filter(marker => marker.path.length > 0).length > 0
       const scClassNames = [
         styles.scrollContainer,
@@ -422,22 +424,28 @@ export default withPatchSubscriber(
         ...(renderBlockActions || hasMarkers ? [styles.hasBlockExtras] : [])
       ].join(' ')
 
-      const toolbar = (
-        <Toolbar
-          editor={this.editor.current}
-          isFullscreen={isFullscreen}
-          markers={markers}
-          hotkeys={this.hotkeys}
-          onFocus={onFocus}
-          onToggleFullscreen={this.handleToggleFullscreen}
-          renderBlock={this.renderBlock}
-          selection={selection}
-          isReadOnly={!!this.props.readOnly}
-        />
-      )
       const wrappedEditor = (
-        <div>
-          {toolbar}
+        <div className={styles.editorBox}>
+          <div className={styles.header}>
+            <div className={styles.toolbarContainer}>
+              <Toolbar
+                editor={this.editor.current}
+                isFullscreen={isFullscreen}
+                markers={markers}
+                hotkeys={this.hotkeys}
+                onFocus={onFocus}
+                renderBlock={this.renderBlock}
+                selection={selection}
+                isReadOnly={readOnly}
+              />
+            </div>
+            <div className={styles.fullscreenButtonContainer}>
+              <ExpandCollapseButton
+                isFullscreen={isFullscreen}
+                onToggleFullscreen={this.handleToggleFullscreen}
+              />
+            </div>
+          </div>
           <div className={scClassNames}>
             <div className={editorWrapperClassNames}>
               <div className={styles.blockExtras}>
@@ -579,7 +587,9 @@ export default withPatchSubscriber(
       const errors = validation.filter(marker => marker.level === 'error')
       const {isLoading, hasFocus, invalidValue, objectEditStatus, ignoreValidation} = this.state
       return (
-        <div className={[styles.root, ...(hasFocus ? [styles.focus] : [])].join(' ')}>
+        <div
+          className={classNames(styles.root, hasFocus && styles.focus, readOnly && styles.readOnly)}
+        >
           <FormField
             markers={markers}
             level={level}
